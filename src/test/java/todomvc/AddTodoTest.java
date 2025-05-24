@@ -3,7 +3,6 @@ package todomvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -23,8 +22,7 @@ public class AddTodoTest extends BaseTest {
   @Test
   void createNewItem() {
     WebElement newItemTitle = driver.findElement(By.className("new-todo"));
-    newItemTitle.sendKeys("Wake up");
-    newItemTitle.sendKeys(Keys.ENTER);
+    addTodo(newItemTitle, "Wake up");
 
     List<WebElement> addedItems = driver.findElement(By.className("todo-list")).findElements(By.cssSelector("li .view label"));
     assertEquals(1, addedItems.size());
@@ -34,10 +32,8 @@ public class AddTodoTest extends BaseTest {
   @Test
   void createTwoItems() {
     WebElement newItemTitle = driver.findElement(By.className("new-todo"));
-    newItemTitle.sendKeys("Wake up");
-    newItemTitle.sendKeys(Keys.ENTER);
-    newItemTitle.sendKeys("Make a coffee");
-    newItemTitle.sendKeys(Keys.ENTER);
+    addTodo(newItemTitle, "Wake up");
+    addTodo(newItemTitle, "Make a coffee");
 
     List<WebElement> addedItems = driver.findElement(By.className("todo-list")).findElements(By.cssSelector("li .view label"));
     assertEquals(2, addedItems.size());
