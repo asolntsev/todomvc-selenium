@@ -12,6 +12,7 @@ repositories {
 dependencies {
   implementation 'org.seleniumhq.selenium:selenium-java:4.33.0'
   implementation 'org.awaitility:awaitility:4.3.0'
+  implementation 'commons-io:commons-io:2.19.0'
 
   testImplementation platform('org.junit:junit-bom:5.12.2')
   testImplementation 'org.junit.jupiter:junit-jupiter'
