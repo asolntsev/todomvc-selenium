@@ -34,6 +34,11 @@ jobs:
     permissions:
       contents: read
 
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [ 'chrome', 'firefox', 'edge' ]
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -42,17 +47,23 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Setup Firefox
+      if: ${{ matrix.browser == 'firefox' }}
+      uses: browser-actions/setup-firefox@latest
+    - name: Setup Edge
+      if: ${{ matrix.browser == 'edge' }}
+      uses: browser-actions/setup-edge@latest
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
-    - name: Run tests
-      run: ./gradlew check
+    - name: Run tests in ${{ matrix.browser }}
+      run: ./gradlew ${{ matrix.browser }} -Dheadless=true
 
     - uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: test-report
-        retention-days: 14
+        name: test-report-${{ matrix.browser }}
+        retention-days: 7
         path: |
           **/build/reports
           **/build/test-results

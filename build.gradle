@@ -19,6 +19,35 @@ dependencies {
   testImplementation "org.junit.platform:junit-platform-launcher"
 }
 
+defaultTasks 'test'
+
 test {
-  useJUnitPlatform()
+  systemProperties['browser'] = 'CHROME'
 }
+tasks.register("chrome", Test) {
+  systemProperties['browser'] = 'CHROME'
+}
+tasks.register("firefox", Test) {
+  systemProperties['browser'] = 'FIREFOX'
+}
+tasks.register("edge", Test) {
+  systemProperties['browser'] = 'EDGE'
+}
+
+tasks.withType(Test).configureEach {
+  useJUnitPlatform()
+  systemProperties["headless"] = System.getProperty("headless", "false")
+
+  jvmArgs = ['-ea', '-Xmx512m']
+  systemProperties['file.encoding'] = 'UTF-8'
+  systemProperties['user.country'] = 'TR'
+  systemProperties['user.language'] = 'tr'
+  outputs.upToDateWhen {false}
+
+  testLogging {
+    events "passed", "skipped", "failed"
+    showExceptions true
+    exceptionFormat 'full'
+  }
+}
+
