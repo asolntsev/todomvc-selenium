@@ -10,9 +10,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'org.seleniumhq.selenium:selenium-java:4.33.0'
-  implementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.33.0'
-  implementation 'org.seleniumhq.selenium:selenium-api:4.33.0'
+  implementation 'com.codeborne:selenide:7.9.3'
   implementation 'org.awaitility:awaitility:4.3.0'
 
   testImplementation platform('org.junit:junit-bom:5.12.2')
