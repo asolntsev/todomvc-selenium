@@ -3,25 +3,25 @@ package todomvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.time.Duration;
+
+import static com.codeborne.selenide.CollectionCondition.texts;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.page;
 
 public class AddTodoPageObjectTest extends BaseTest {
   private TodoPageObject page;
 
   @BeforeEach
   void setUp() {
-    page = new TodoPageObject(driver);
-    await().atMost(5, SECONDS).until(() -> page.newItemTitle.isDisplayed());
+    page = page();
+    page.newItemTitle.shouldBe(visible, Duration.ofSeconds(5));
   }
 
   @Test
   void createNewItem() {
     page.addItem("Wake up");
-
-    assertEquals(1, page.addedItems.size());
-    assertEquals("Wake up", page.addedItems.get(0).getText());
+    page.addedItems.shouldHave(texts("Wake up"));
   }
 
   @Test
@@ -29,8 +29,6 @@ public class AddTodoPageObjectTest extends BaseTest {
     page.addItem("Wake up");
     page.addItem("Make a coffee");
 
-    assertEquals(2, page.addedItems.size());
-    assertEquals("Wake up", page.addedItems.get(0).getText());
-    assertEquals("Make a coffee", page.addedItems.get(1).getText());
+    page.addedItems.shouldHave(texts("Wake up", "Make a coffee"));
   }
 }

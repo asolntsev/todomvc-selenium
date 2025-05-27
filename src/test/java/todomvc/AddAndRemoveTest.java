@@ -1,28 +1,25 @@
 package todomvc;
 
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.CollectionCondition.texts;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class AddAndRemoveTest extends BaseTest {
   @Test
   void addAndRemoveItem() {
-    WebElement newItemTitle = driver.findElement(By.className("new-todo"));
-    newItemTitle.sendKeys("Wake up", Keys.ENTER);
-    newItemTitle.sendKeys("Make a coffee", Keys.ENTER);
+    $(".new-todo").setValue("Wake up").pressEnter();
+    $(".new-todo").setValue("Make a coffee").pressEnter();
 
-    WebElement secondItem = driver.findElements(By.cssSelector(".todo-list li .view")).get(1);
-    new Actions(driver).moveToElement(secondItem).perform();
-    secondItem.findElement(By.cssSelector(".destroy")).click();
+    SelenideElement secondItem = $(".todo-list li .view", 1);
+    secondItem.hover();
+    secondItem.find(".destroy").click();
 
-    List<WebElement> addedItems = driver.findElements(By.cssSelector(".todo-list li .view label"));
-    assertEquals(1, addedItems.size());
-    assertEquals("Wake up", addedItems.get(0).getText());
+    $$(".todo-list li .view label")
+      .shouldHave(size(1))
+      .shouldHave(texts("Wake up"));
   }
 }

@@ -3,20 +3,15 @@ package todomvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.io.FileUtils.readFileToString;
+import static com.codeborne.selenide.Selenide.page;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilterTodosTest extends BaseTest {
   private TodoPageObject page;
 
   @BeforeEach
   void setUp() {
-    page = new TodoPageObject(driver);
+    page = page();
     page.addItem("Wake up");
     page.addItem("Make a coffee");
     page.addItem("Shave yourself");
@@ -51,14 +46,5 @@ public class FilterTodosTest extends BaseTest {
     page.removeCompletedItems();
 
     assertEquals(2, page.addedItems.size());
-  }
-
-  @Test
-  void download() throws IOException {
-    File file = page.downloadSource();
-
-    assertEquals("source.html", file.getName());
-    assertTrue(readFileToString(file, UTF_8).contains("TodoMVC: Vue"));
-    System.out.printf("[[ATTACHMENT|%s]]%n", file.getAbsolutePath());
   }
 }

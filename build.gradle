@@ -6,13 +6,15 @@ group = 'io.github.asolntsev'
 version = '1.0-SNAPSHOT'
 
 repositories {
+  mavenLocal()
   mavenCentral()
 }
 
 dependencies {
-  implementation 'org.seleniumhq.selenium:selenium-java:4.33.0'
+  implementation 'com.codeborne:selenide:7.9.3-SNAPSHOT'
   implementation 'org.awaitility:awaitility:4.3.0'
   implementation 'commons-io:commons-io:2.19.0'
+  testRuntimeOnly("org.slf4j:slf4j-simple:2.0.17")
 
   testImplementation platform('org.junit:junit-bom:5.12.2')
   testImplementation 'org.junit.jupiter:junit-jupiter'

@@ -1,43 +1,32 @@
 package todomvc;
 
-import org.apache.commons.io.IOUtils;
-import org.openqa.selenium.By;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.codeborne.selenide.Selenide.$;
 
 public class TodoPageObject {
-  private final WebDriver driver;
-
   @FindBy(className = "new-todo")
-  WebElement newItemTitle;
+  SelenideElement newItemTitle;
 
   @FindBy(css = ".todo-list li .view")
-  List<WebElement> addedItems;
+  ElementsCollection addedItems;
 
   @FindBy(className = "todo-count")
-  WebElement itemsCount;
+  SelenideElement itemsCount;
 
   @FindBy(css = ".filters a")
   private List<WebElement> filterLinks;
 
   @FindBy(className = "clear-completed")
-  private WebElement removeCompletedButton;
-
-  public TodoPageObject(WebDriver driver) {
-    this.driver = driver;
-    PageFactory.initElements(driver, this);
-  }
+  private SelenideElement removeCompletedButton;
 
   public void addItem(String title) {
     newItemTitle.sendKeys(title);
@@ -45,15 +34,15 @@ public class TodoPageObject {
   }
 
   public void removeItem(int index) {
-    WebElement item = addedItems.get(index);
-    new Actions(driver).moveToElement(item).perform();
-    item.findElement(By.className("destroy")).click();
+    addedItems.get(index)
+            .hover()
+            .find(".destroy").click();
   }
 
   public void markAsCompleted(int index) {
-    WebElement item = addedItems.get(index);
-    item.findElement(By.className("toggle")).click();
-    assertEquals("completed", item.findElement(By.xpath("..")).getAttribute("class"));
+    SelenideElement item = addedItems.get(index);
+    item.find(".toggle").click();
+    item.parent().shouldHave(Condition.cssClass("completed"));
   }
 
   public void removeCompletedItems() {
@@ -68,10 +57,7 @@ public class TodoPageObject {
     }
   }
 
-  public File downloadSource() throws IOException {
-    String url = driver.findElement(By.cssSelector(".source-links a")).getAttribute("href");
-    File file = new File("build/source.html");
-    IOUtils.copy(new URL(url), file);
-    return file;
+  public File downloadSource() {
+    return $(".source-links a").download();
   }
 }
