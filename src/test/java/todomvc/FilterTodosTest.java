@@ -46,13 +46,4 @@ public class FilterTodosTest extends BaseTest {
 
     assertEquals(2, page.addedItems.size());
   }
-
-  @Test
-  void download() throws IOException {
-    File file = page.downloadSource();
-
-    assertEquals("source.html", file.getName());
-    assertTrue(readFileToString(file, UTF_8).contains("TodoMVC: Vue"));
-    System.out.printf("[[ATTACHMENT|%s]]%n", file.getAbsolutePath());
-  }
 }

@@ -1,6 +1,5 @@
 package todomvc;
 
-import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -9,9 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,12 +62,5 @@ public class TodoPageObject {
       case ACTIVE -> filterLinks.get(1).click();
       case COMPLETED -> filterLinks.get(2).click();
     }
-  }
-
-  public File downloadSource() throws IOException {
-    String url = driver.findElement(By.cssSelector(".source-links a")).getAttribute("href");
-    File file = new File("build/source.html");
-    IOUtils.copy(new URL(url), file);
-    return file;
   }
 }
