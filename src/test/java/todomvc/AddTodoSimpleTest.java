@@ -2,42 +2,36 @@ package todomvc;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.CollectionCondition.texts;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class AddTodoSimpleTest extends BaseTest {
   @BeforeEach
   void setUp() {
-    WebDriverWait wait = new WebDriverWait(driver, Config.timeout);
-    wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.tagName("h1")));
-    wait.until(ExpectedConditions.textToBe(By.tagName("h1"), "todos"));
+    $("h1").shouldBe(visible, text("todos"));
   }
 
   @Test
   void createNewItem() {
-    WebElement newItemTitle = driver.findElement(By.className("new-todo"));
-    addTodo(newItemTitle, "Wake up");
+    $(".new-todo").setValue("Wake up").pressEnter();
 
-    List<WebElement> addedItems = driver.findElement(By.className("todo-list")).findElements(By.cssSelector("li .view label"));
-    assertEquals(1, addedItems.size());
-    assertEquals("Wake up", addedItems.get(0).getText());
+    $$(".todo-list li .view label")
+      .shouldHave(size(1))
+      .get(0).shouldHave(text("Wake up"));
   }
 
   @Test
   void createTwoItems() {
-    WebElement newItemTitle = driver.findElement(By.className("new-todo"));
-    addTodo(newItemTitle, "Wake up");
-    addTodo(newItemTitle, "Make a coffee");
+    $(".new-todo")
+      .setValue("Wake up").pressEnter()
+      .setValue("Make a coffee").pressEnter();
 
-    List<WebElement> addedItems = driver.findElement(By.className("todo-list")).findElements(By.cssSelector("li .view label"));
-    assertEquals(2, addedItems.size());
-    assertEquals("Wake up", addedItems.get(0).getText());
-    assertEquals("Make a coffee", addedItems.get(1).getText());
+    $$(".todo-list li .view label")
+      .shouldHave(texts("Wake up", "Make a coffee"));
   }
 }

@@ -1,11 +1,14 @@
 package todomvc;
 
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.Keys;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
+@ExtendWith(ScreenShooterExtension.class)
 public abstract class BaseTest {
   protected WebDriver driver;
 
@@ -13,6 +16,8 @@ public abstract class BaseTest {
   final void openBrowser() {
     driver = WebdriverFactory.create();
     driver.navigate().to(Config.URL);
+
+    WebDriverRunner.setWebDriver(driver);
   }
 
   @AfterEach
@@ -21,10 +26,6 @@ public abstract class BaseTest {
       driver.quit();
       driver = null;
     }
-  }
-
-  protected void addTodo(WebElement newItemTitle, String title) {
-    newItemTitle.sendKeys(title);
-    newItemTitle.sendKeys(Keys.ENTER);
+    Selenide.closeWebDriver();
   }
 }

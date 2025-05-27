@@ -1,5 +1,6 @@
 package todomvc;
 
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -29,11 +30,11 @@ public class EditItemTest extends BaseTest {
   @Test
   void editItemsTitle() {
     WebElement newItemTitle = driver.findElement(By.className("new-todo"));
-    addTodo(newItemTitle, "One");
-    addTodo(newItemTitle, "Two");
-    addTodo(newItemTitle, "Three");
+      ((SelenideElement) newItemTitle).setValue("One").pressEnter();
+      ((SelenideElement) newItemTitle).setValue("Two").pressEnter();
+      ((SelenideElement) newItemTitle).setValue("Three").pressEnter();
 
-    List<WebElement> addedItems = driver.findElement(By.className("todo-list")).findElements(By.cssSelector("li"));
+      List<WebElement> addedItems = driver.findElement(By.className("todo-list")).findElements(By.cssSelector("li"));
     assertEquals(3, addedItems.size());
 
     new Actions(driver).doubleClick(addedItems.get(0)).perform();
