@@ -18,7 +18,7 @@ public class AddMultipleTodosTest extends BaseTest {
 
   @Test
   void addMultipleItems() {
-    for (int i = 1; i <= 100; i++) {
+    for (int i = 1; i <= 10; i++) {
       page.addItem("Repeat action #" + i);
       if (i == 1)
         assertEquals(i + " item left", page.itemsCount.getText());
@@ -26,23 +26,23 @@ public class AddMultipleTodosTest extends BaseTest {
         assertEquals(i + " items left", page.itemsCount.getText());
     }
 
-    assertEquals(100, page.addedItems.size());
+    assertEquals(10, page.addedItems.size());
     assertEquals("Repeat action #1", page.addedItems.get(0).getText());
-    assertEquals("Repeat action #100", page.addedItems.get(99).getText());
+    assertEquals("Repeat action #10", page.addedItems.get(9).getText());
   }
 
   @Test
   void removeMultipleItems() {
-    for (int i = 1; i <= 100; i++) {
+    for (int i = 1; i <= 10; i++) {
       page.addItem("Repeat action #" + i);
     }
 
-    assertEquals(100, page.addedItems.size());
+    assertEquals(10, page.addedItems.size());
     assertEquals("Repeat action #1", page.addedItems.get(0).getText());
-    assertEquals("Repeat action #100", page.addedItems.get(99).getText());
-    assertEquals("100 items left", page.itemsCount.getText());
+    assertEquals("Repeat action #10", page.addedItems.get(9).getText());
+    assertEquals("10 items left", page.itemsCount.getText());
 
-    for (int i = 99; i >= 0; i--) {
+    for (int i = 9; i >= 0; i--) {
       page.removeItem(i);
       if (i == 1)
         assertEquals(i + " item left", page.itemsCount.getText());

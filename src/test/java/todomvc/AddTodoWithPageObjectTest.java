@@ -7,7 +7,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AddTodoPageObjectTest extends BaseTest {
+public class AddTodoWithPageObjectTest extends BaseTest {
   private TodoPageObject page;
 
   @BeforeEach

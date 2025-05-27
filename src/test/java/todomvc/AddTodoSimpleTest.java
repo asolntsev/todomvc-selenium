@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AddTodoTest extends BaseTest {
+public class AddTodoSimpleTest extends BaseTest {
   @BeforeEach
   void setUp() {
     WebDriverWait wait = new WebDriverWait(driver, Config.timeout);
